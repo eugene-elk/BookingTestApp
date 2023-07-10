@@ -5,19 +5,19 @@ import {NavigationContainer} from "@react-navigation/native";
 import AppStack from "./navigation/AppStack";
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <AppStack/>
-      <StatusBar style="auto" />
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer>
+            <AppStack/>
+            <StatusBar style="auto" />
+        </NavigationContainer>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });

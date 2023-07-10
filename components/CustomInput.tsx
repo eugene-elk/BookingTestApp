@@ -7,6 +7,8 @@ interface CustomInputProps {
 
 const CustomInput: React.FC<CustomInputProps> = ({ name }) => {
 
+
+
     return (
         <TextInput onChangeText={(text) => {console.log(text)}}/>
     )
