@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import FormScreen from "./screens/FormScreen";
+import {NavigationContainer} from "@react-navigation/native";
+import AppStack from "./navigation/AppStack";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello world</Text>
+    <NavigationContainer>
+      <AppStack/>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
 
