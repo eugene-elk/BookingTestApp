@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import {Dimensions, StyleSheet, View, Text, Pressable} from "react-native";
+import {Dimensions, StyleSheet, View, Text, Pressable, TouchableOpacity} from "react-native";
 import BackSVG from "../assets/svg/Back";
+import {NavigationProp} from "@react-navigation/native";
 
 const { height, width } = Dimensions.get('window');
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    active: boolean,
+    onPress?: () => void,
+}
+
+const Header: React.FC<HeaderProps> = ({active = false, onPress = () => null}) => {
     return (
         <View style={styles.container}>
-            <BackSVG/>
+            {active ?
+                <TouchableOpacity onPress={onPress}>
+                    <BackSVG/>
+                </TouchableOpacity>
+                :
+                <BackSVG/>
+            }
         </View>
     )
 };
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'grey',
         width: width,
         height: 56,
         justifyContent: "center",

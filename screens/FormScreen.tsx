@@ -6,7 +6,6 @@ import Header from "../components/Header";
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Input from "../components/Input";
 
-
 const { height, width } = Dimensions.get('window');
 export default function FormScreen({navigation}) {
 
@@ -20,10 +19,27 @@ export default function FormScreen({navigation}) {
         setButtonActive(true);
     }
 
+    const checkCorrectName = (input: string): boolean => {
+        if (input.length > 3) {
+            return true;
+        }
+        return false;
+    }
+
+    const checkCorrectEmail = (input: string): boolean => {
+        if (input.length > 3) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Header/>
+            <Header
+                active={false}
+            />
             <ScrollView
+                scrollEnabled={true}
                 contentContainerStyle={styles.contentContainer}
             >
                 <View style={styles.textContainer}>
@@ -36,10 +52,18 @@ export default function FormScreen({navigation}) {
                 </View>
                 <View style={styles.inputsContainer}>
                     <View style={styles.inputWrapper}>
-                        <Input name={"Имя"}/>
+                        <Input
+                            name={"Имя"}
+                            warningMessage={"Введите корректное имя"}
+                            checkCorrect={checkCorrectName}
+                        />
                     </View>
                     <View style={styles.inputWrapper}>
-                        <Input name={"E-mail"}/>
+                        <Input
+                            name={"E-mail"}
+                            warningMessage={"Введите корректный e-mail"}
+                            checkCorrect={checkCorrectEmail}
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -63,10 +87,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     inputsContainer: {
-        marginTop: 16,
+        marginTop: 32,
     },
     inputWrapper: {
-        marginTop: 16,
+        //marginBottom: 16,
     },
     textBold: {
         textAlign: "center",

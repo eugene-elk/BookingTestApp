@@ -7,16 +7,23 @@ import CustomButton from "../components/CustomButton";
 
 const { height, width } = Dimensions.get('window');
 
-export default function ResultScreen() {
+export default function ResultScreen({navigation}) {
 
     const onPress = () => {
         console.log("onPress");
     }
 
+    const onPressHeader = () => {
+        navigation.goBack();
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
             <View style={styles.container}>
-                <Header />
+                <Header
+                    active={true}
+                    onPress={onPressHeader}
+                />
                 <View style={styles.content}>
                     <LottieView
                         autoPlay
