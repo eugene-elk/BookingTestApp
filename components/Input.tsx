@@ -22,24 +22,36 @@ const AnimatedView = Animated.createAnimatedComponent(Text);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
 
+    const [currentInput, setCurrentInput] = useState<string>("");
+
     const [focused, setFocused] = useState<boolean>(false);
     const movePlaceholder = useSharedValue(0);
     const activeInput = useSharedValue(0);
 
-    const [isCorrect, setIsCorrect] = useState<boolean>(false);
+    const [isCorrect, setIsCorrect] = useState<boolean>(true);
     const warningAnimated = useSharedValue(1);
 
     useEffect(()=>{
-        movePlaceholder.value = withTiming(Number(focused), { duration: 100 });
-        activeInput.value = withTiming(Number(focused), { duration: 100 });
-    },[focused]);
-
-    useEffect(() => {
+        if ((currentInput === "") && (!focused)) {
+            movePlaceholder.value = withTiming(0, { duration: 100 });
+        }
+        else {
+            movePlaceholder.value = withTiming(1, { duration: 100 });
+        }
         warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
-    }, [isCorrect])
+
+        if ((currentInput !== "") && (!isCorrect)) {
+            activeInput.value = withTiming(1, { duration: 100 });
+        }
+        else {
+            activeInput.value = withTiming(Number(focused), { duration: 100 });
+        }
+
+    },[focused, currentInput, isCorrect]);
 
     const onChangeText = (input: string) => {
         setIsCorrect(checkCorrect(input));
+        setCurrentInput(input);
     }
 
     const animatedPlaceholder = useAnimatedStyle(() => {
@@ -112,11 +124,10 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
         <View style={styles.container}>
             <AnimatedTextInput
                 onChangeText={onChangeText}
+                value={currentInput}
                 style={[styles.textInput, animatedBorder]}
                 onBlur={() => setFocused(false)}
                 onFocus={() => setFocused(true)}
-                cursorColor={'black'}
-                selectionColor={'black'}
                 disableFullscreenUI={true}
                 keyboardType={name === "E-mail" ? 'email-address' : 'default'}
             />
@@ -132,7 +143,7 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
     )
 };
 
-const styles = StyleSheet.create({
+const styles= StyleSheet.create({
     container: {
 
     },
@@ -144,7 +155,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingTop: 14,
         borderWidth: 1,
-
     },
     name: {
         position: 'absolute',

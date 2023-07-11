@@ -5,6 +5,7 @@ import CustomCheckbox from "../components/CustomCheckbox";
 import Header from "../components/Header";
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Input from "../components/Input";
+import InputPhone from "../components/InputPhone";
 
 const { height, width } = Dimensions.get('window');
 export default function FormScreen({navigation}) {
@@ -64,6 +65,9 @@ export default function FormScreen({navigation}) {
                             warningMessage={"Введите корректный e-mail"}
                             checkCorrect={checkCorrectEmail}
                         />
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <InputPhone/>
                     </View>
                 </View>
             </ScrollView>

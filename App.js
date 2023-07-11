@@ -4,6 +4,10 @@ import FormScreen from "./screens/FormScreen";
 import {NavigationContainer} from "@react-navigation/native";
 import AppStack from "./navigation/AppStack";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {enableScreens} from 'react-native-screens';
+import 'react-native-gesture-handler';
+
+enableScreens();
 
 export default function App() {
     return (
