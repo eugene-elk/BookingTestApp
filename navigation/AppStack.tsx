@@ -7,8 +7,20 @@ const Stack = createStackNavigator();
 function AppStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="FormScreen" component={FormScreen} />
-            <Stack.Screen name="ResultScreen" component={ResultScreen} />
+            <Stack.Screen
+                name="FormScreen"
+                component={FormScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="ResultScreen"
+                component={ResultScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
         </Stack.Navigator>
     );
 }
