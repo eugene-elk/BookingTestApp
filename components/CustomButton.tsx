@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
-import {Button, Dimensions, Pressable, StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import {Button, Dimensions, Pressable, StyleSheet, View, Text, TouchableOpacity, TextInput} from "react-native";
+import Animated, {
+    interpolate,
+    interpolateColor,
+    runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming
+} from "react-native-reanimated";
 
 const { height, width } = Dimensions.get('window');
 
@@ -9,17 +17,35 @@ interface ButtonProps {
     onPress: () => void,
 }
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 const CustomButton: React.FC<ButtonProps> = ({ name, active=true, onPress }) => {
 
-    useEffect(() => {
+    const activeButton = useSharedValue(0);
 
+    useEffect(() => {
+        activeButton.value = withTiming(Number(active), { duration: 100 });
     }, [active]);
+
+    const animatedTextInput = useAnimatedStyle(() => {
+        const colorAnimated = interpolateColor(
+            activeButton.value,
+            [0, 1],
+            ["#A09EFF", "#413DFF"]
+        )
+
+        return {
+            backgroundColor: colorAnimated,
+        }
+    });
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={onPress}>
+            <AnimatedTouchableOpacity
+                style={[animatedTextInput, styles.button]}
+                onPress={active ? onPress : () => null}
+            >
                 <Text style={styles.text}>{name}</Text>
-            </TouchableOpacity>
+            </AnimatedTouchableOpacity>
         </View>
     )
 }

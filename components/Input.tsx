@@ -14,7 +14,7 @@ const { height, width } = Dimensions.get('window');
 interface InputProps {
     name: string,
     warningMessage: string,
-    checkCorrect: (input: string) => boolean,
+    checkCorrect: (input: string, setState: React.Dispatch<React.SetStateAction<string>>) => boolean,
 }
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -31,14 +31,20 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
     const [isCorrect, setIsCorrect] = useState<boolean>(true);
     const warningAnimated = useSharedValue(1);
 
-    useEffect(()=>{
+    useEffect(()=> {
         if ((currentInput === "") && (!focused)) {
             movePlaceholder.value = withTiming(0, { duration: 100 });
         }
         else {
             movePlaceholder.value = withTiming(1, { duration: 100 });
         }
-        warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
+
+        if ((currentInput === "") && (focused)) {
+            warningAnimated.value = withTiming(0, { duration: 100 });
+        }
+        else {
+            warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
+        }
 
         if ((currentInput !== "") && (!isCorrect)) {
             activeInput.value = withTiming(1, { duration: 100 });
@@ -46,12 +52,15 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
         else {
             activeInput.value = withTiming(Number(focused), { duration: 100 });
         }
-
     },[focused, currentInput, isCorrect]);
 
     const onChangeText = (input: string) => {
-        setIsCorrect(checkCorrect(input));
-        setCurrentInput(input);
+        setIsCorrect(checkCorrect(input, setCurrentInput));
+    }
+
+    const onFocus = () => {
+        setIsCorrect(checkCorrect(currentInput, setCurrentInput));
+        setFocused(true);
     }
 
     const animatedPlaceholder = useAnimatedStyle(() => {
@@ -127,7 +136,7 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
                 value={currentInput}
                 style={[styles.textInput, animatedBorder]}
                 onBlur={() => setFocused(false)}
-                onFocus={() => setFocused(true)}
+                onFocus={onFocus}
                 disableFullscreenUI={true}
                 keyboardType={name === "E-mail" ? 'email-address' : 'default'}
             />
