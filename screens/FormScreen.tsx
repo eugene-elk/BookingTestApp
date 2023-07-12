@@ -16,6 +16,7 @@ export default function FormScreen({navigation}) {
     const [ready, setReady] = useState({
         name: false,
         email: false,
+        phone: false,
         checkbox: false,
     });
 
@@ -23,7 +24,6 @@ export default function FormScreen({navigation}) {
         console.log(ready);
         let result: boolean = true;
         for (let key in ready) {
-            console.log(key, ready[key]);
             result = result && ready[key];
         }
         console.log(result);
@@ -35,7 +35,12 @@ export default function FormScreen({navigation}) {
     }
 
     const checkCorrectName = (input: string, setState: React.Dispatch<React.SetStateAction<string>>): boolean => {
-        const regexFull = /^[\u0400-\u04FF]{3,10}$/;
+
+        if (input.length > 10) {
+            input = input.slice(0, 10);
+        }
+
+        const regexFull = /^[\u0400-\u04FF]([\u0400-\u04FF ]*[\u0400-\u04FF])?$/;
         const regexSymbols = /^[\u0400-\u04FF ]*$/i;
         const testRegexFull = regexFull.test(input);
         const testRegexSymbols = regexSymbols.test(input);
@@ -53,6 +58,11 @@ export default function FormScreen({navigation}) {
     }
 
     const checkCorrectEmail = (input: string, setState: React.Dispatch<React.SetStateAction<string>>): boolean => {
+
+        if (input.length > 30) {
+            input = input.slice(0, 30);
+        }
+
         const regexFull = /^[A-Za-z0-9._-]{1,30}@[A-Za-z0-9.-]+\.[A-Za-z]{1,}$/;
         const regexSymbols = /^[A-Za-z0-9._ @-]*$/;
         const testRegexFull = regexFull.test(input);
@@ -65,6 +75,29 @@ export default function FormScreen({navigation}) {
         setReady({
             ...ready,
             email: testRegexFull,
+        });
+
+        return testRegexFull;
+    }
+
+    const checkCorrectPhone = (input: string, setState: React.Dispatch<React.SetStateAction<string>>): boolean => {
+
+        if (input.length > 13) {
+            input = input.slice(0, 13);
+        }
+
+        const regexFull = /^[0-9]{7,13}$/;
+        const regexSymbols = /^[0-9]*$/;
+        const testRegexFull = regexFull.test(input);
+        const testRegexSymbols = regexSymbols.test(input);
+
+        if (testRegexSymbols) {
+            setState(input);
+        }
+
+        setReady({
+            ...ready,
+            phone: testRegexFull,
         });
 
         return testRegexFull;
@@ -112,7 +145,10 @@ export default function FormScreen({navigation}) {
                             />
                         </View>
                         <View style={styles.inputWrapper}>
-                            <InputPhone/>
+                            <InputPhone
+                                warningMessage={"Введите корректный номер телефона"}
+                                checkCorrect={checkCorrectPhone}
+                            />
                         </View>
                     </View>
                 </ScrollView>

@@ -12,31 +12,44 @@ import Animated, {
 const { height, width } = Dimensions.get('window');
 
 interface InputPhoneProps {
-  //checkCorrect: (input: string) => boolean,
+    warningMessage: string,
+    checkCorrect: (input: string, setState: React.Dispatch<React.SetStateAction<string>>) => boolean,
 }
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 const AnimatedView = Animated.createAnimatedComponent(Text);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-const InputPhone: React.FC<InputPhoneProps> = ({  }) => {
+const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage }) => {
 
     const [currentInput, setCurrentInput] = useState<string>("")
     const [focused, setFocused] = useState<boolean>(false);
-    const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
-
     const activeInput = useSharedValue(0);
 
+    const [isCorrect, setIsCorrect] = useState<boolean>(true);
+    const warningAnimated = useSharedValue(1);
+
+    const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
+
     useEffect(() => {
+        console.log("isCorrect:", isCorrect);
+
         if (focused || optionsOpen || currentInput !== "") {
             activeInput.value = withTiming(1, { duration: 100 });
         }
         else {
             activeInput.value = withTiming(0, { duration: 100 });
         }
-    }, [focused]);
+
+        if ((currentInput === "") && (focused)) {
+            warningAnimated.value = withTiming(0, { duration: 100 });
+        }
+        else {
+            warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
+        }
+    }, [focused, isCorrect]);
 
     const onChangeText = (input: string) => {
-        setCurrentInput(input);
+        setIsCorrect(checkCorrect(input, setCurrentInput));
     }
 
     const animatedTextInput = useAnimatedStyle(() => {
@@ -82,22 +95,53 @@ const InputPhone: React.FC<InputPhoneProps> = ({  }) => {
         }
     });
 
+    const animatedWarning = useAnimatedStyle(() => {
+        const animatedMargin = interpolate(
+            warningAnimated.value,
+            [1, 0],
+            [0, 8]
+        )
+        const animatedHeight = interpolate(
+            warningAnimated.value,
+            [1, 0],
+            [16, 18 + 16]
+        )
+        const animatedOpacity = interpolate(
+            warningAnimated.value,
+            [1, 0],
+            [0, 1]
+        )
+
+        return {
+            marginTop: animatedMargin,
+            height: animatedHeight,
+            opacity: animatedOpacity,
+        }
+    })
+
     return (
-        <View style={styles.container}>
-            <AnimatedView style={[styles.codeInputContainer, animatedCodeContainer]}>
+        <View>
+            <View style={styles.container}>
+                <AnimatedView style={[styles.codeInputContainer, animatedCodeContainer]}>
+                </AnimatedView>
+                <AnimatedTextInput
+                    onChangeText={onChangeText}
+                    value={currentInput}
+                    style={[styles.textInput, animatedTextInput]}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    disableFullscreenUI={true}
+                    keyboardType={"phone-pad"}
+                />
+                <AnimatedText style={[styles.name, animatedPlaceholder]}>
+                    {"Номер телефона"}
+                </AnimatedText>
+            </View>
+            <AnimatedView style={[styles.containerText, animatedWarning]}>
+                <Text style={styles.textWarning}>
+                    {warningMessage}
+                </Text>
             </AnimatedView>
-            <AnimatedTextInput
-                onChangeText={onChangeText}
-                value={currentInput}
-                style={[styles.textInput, animatedTextInput]}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                disableFullscreenUI={true}
-                keyboardType={"phone-pad"}
-            />
-            <AnimatedText style={[styles.name, animatedPlaceholder]}>
-                {"Номер телефона"}
-            </AnimatedText>
         </View>
     );
 };
@@ -106,7 +150,6 @@ const styles = StyleSheet.create({
     container: {
         height: 56,
         flexDirection: 'row',
-        marginBottom: 8,
     },
     codeInputContainer: {
         flex: 1,
@@ -127,6 +170,13 @@ const styles = StyleSheet.create({
         left: 16,
         lineHeight: 20,
         fontSize: 15,
+    },
+    containerText: {
+        paddingLeft: 80,
+    },
+    textWarning: {
+        letterSpacing: -0.08,
+        color: "#FF450B",
     }
 })
 
