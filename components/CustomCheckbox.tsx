@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         borderColor: '#60626D',
     },
     text: {
-        backgroundColor: 'pink',
+
     }
 });
 

@@ -174,10 +174,13 @@ const styles= StyleSheet.create({
     },
     containerText: {
         paddingLeft: 16,
+
     },
     textWarning: {
         letterSpacing: -0.08,
         color: "#FF450B",
+        lineHeight: 18,
+        fontSize: 13,
     }
 });
 

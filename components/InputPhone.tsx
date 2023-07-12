@@ -8,6 +8,7 @@ import Animated, {
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
+import CodeInput from "./CodeInput";
 
 const { height, width } = Dimensions.get('window');
 
@@ -52,22 +53,34 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         setIsCorrect(checkCorrect(input, setCurrentInput));
     }
 
+    const onFocus = () => {
+        setIsCorrect(checkCorrect(currentInput, setCurrentInput));
+        setFocused(true);
+    }
+
     const animatedTextInput = useAnimatedStyle(() => {
         const widthAnimated = interpolate(
             activeInput.value,
             [0, 1],
-            [width - (16 * 2), width - (16 * 2) - 64]
+            [width - (16 * 2), width - (16 * 2) - 64 - 4]
         )
         const borderRadiusLeftAnimated = interpolate(
             activeInput.value,
             [0, 1],
             [12, 0]
         )
+        const animatedColor = interpolateColor(
+            activeInput.value,
+            [0, 1],
+            ["#FFFFFF", isCorrect ? "#413DFF" : "#FF450B"]
+        );
+        //console.log(widthAnimated);
 
         return {
             width: widthAnimated,
             borderTopLeftRadius: borderRadiusLeftAnimated,
             borderBottomLeftRadius: borderRadiusLeftAnimated,
+            borderColor: animatedColor,
         }
     })
 
@@ -96,7 +109,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
     });
 
     const animatedWarning = useAnimatedStyle(() => {
-        const animatedMargin = interpolate(
+        const animatedMarginTop = interpolate(
             warningAnimated.value,
             [1, 0],
             [0, 8]
@@ -111,9 +124,15 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
             [1, 0],
             [0, 1]
         )
+        const animatedMarginLeft = interpolate(
+            activeInput.value,
+            [0, 1],
+            [16, 16 + 64]
+        )
 
         return {
-            marginTop: animatedMargin,
+            marginLeft: animatedMarginLeft,
+            marginTop: animatedMarginTop,
             height: animatedHeight,
             opacity: animatedOpacity,
         }
@@ -123,12 +142,13 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         <View>
             <View style={styles.container}>
                 <AnimatedView style={[styles.codeInputContainer, animatedCodeContainer]}>
+                    <CodeInput />
                 </AnimatedView>
                 <AnimatedTextInput
                     onChangeText={onChangeText}
                     value={currentInput}
                     style={[styles.textInput, animatedTextInput]}
-                    onFocus={() => setFocused(true)}
+                    onFocus={onFocus}
                     onBlur={() => setFocused(false)}
                     disableFullscreenUI={true}
                     keyboardType={"phone-pad"}
@@ -155,7 +175,6 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 12,
         borderBottomLeftRadius: 12,
-        backgroundColor: 'white',
     },
     textInput: {
         backgroundColor: 'white',
@@ -163,6 +182,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 12,
         borderTopRightRadius: 12,
         paddingLeft: 16,
+        borderWidth: 1,
     },
     name: {
         position: 'absolute',
@@ -172,11 +192,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     containerText: {
-        paddingLeft: 80,
+
     },
     textWarning: {
         letterSpacing: -0.08,
         color: "#FF450B",
+        lineHeight: 18,
+        fontSize: 13,
     }
 })
 

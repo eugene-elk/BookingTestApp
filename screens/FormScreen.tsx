@@ -7,6 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Input from "../components/Input";
 import InputPhone from "../components/InputPhone";
 import {useDeepEffect} from "../hooks/useDeepEffect";
+import CodeInput from "../components/CodeInput";
 
 const { height, width } = Dimensions.get('window');
 export default function FormScreen({navigation}) {
@@ -113,7 +114,7 @@ export default function FormScreen({navigation}) {
 
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
-            <Pressable style={styles.container} onPress={() => null}>
+            <View style={styles.container}>
                 <ScrollView
                     scrollEnabled={true}
                     contentContainerStyle={styles.contentContainer}
@@ -163,7 +164,7 @@ export default function FormScreen({navigation}) {
                         onChange={checkboxPressed}
                     />
                 </View>
-            </Pressable>
+            </View>
         </SafeAreaView>
     )
 }
@@ -173,12 +174,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'yellow'
     },
     contentContainer: {
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: 'pink'
     },
     textContainer: {
         marginTop: 8,
@@ -214,6 +213,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 8,
-        backgroundColor: 'grey',
     }
 });
