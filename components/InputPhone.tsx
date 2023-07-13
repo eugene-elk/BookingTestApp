@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Dimensions, StyleSheet, TextInput, View, Text} from "react-native";
-import Animated, {
+import React, {useEffect, useState} from "react";
+import {Dimensions, StyleSheet, View, Text} from "react-native";
+import {
   interpolate,
   interpolateColor,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
 import CodeInput from "./CodeInput";
 import {AnimatedMaskedTextInput, AnimatedText, AnimatedView} from "./AnimatedComponents";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -78,7 +78,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         const animatedColor = interpolateColor(
             activeInput.value,
             [0, 1],
-            ["#FFFFFF", isCorrect ? "#413DFF" : "#FF450B"]
+            ['white', isCorrect ? colors.success : colors.error]
         );
         //console.log(widthAnimated);
 
@@ -214,13 +214,16 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 12,
         paddingLeft: 16,
         borderWidth: 1,
-        fontSize: 15,
-        lineHeight: 20
-    },
-    placeholderEnd: {
+        fontFamily: 'DMSans-Medium',
         fontSize: 15,
         lineHeight: 20,
-        color: 'grey',
+        color: colors.textMain,
+    },
+    placeholderEnd: {
+        fontFamily: 'DMSans-Medium',
+        fontSize: 15,
+        lineHeight: 20,
+        color: colors.mask,
         position: 'absolute',
         top: 16,
     },
@@ -230,15 +233,18 @@ const styles = StyleSheet.create({
         left: 16,
         lineHeight: 20,
         fontSize: 15,
+        fontFamily: 'Raleway-Medium',
+        color: colors.textMain,
     },
     containerText: {
 
     },
     textWarning: {
         letterSpacing: -0.08,
-        color: "#FF450B",
+        color: colors.error,
         lineHeight: 18,
         fontSize: 13,
+        fontFamily: 'Raleway-Regular',
     },
     hiddenText: {
         position: 'absolute',
@@ -246,6 +252,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         color: 'transparent',
         fontSize: 15,
+        fontFamily: 'DMSans-Medium',
     }
 })
 

@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, StyleSheet, TextInput, View, Text} from "react-native";
-import Animated, {
+import {Dimensions, StyleSheet, View, Text} from "react-native";
+import {
     interpolate,
     interpolateColor,
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withTiming
 } from "react-native-reanimated";
+import {AnimatedText, AnimatedTextInput, AnimatedView} from "./AnimatedComponents";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -17,9 +18,6 @@ interface InputProps {
     checkCorrect: (input: string, setState: React.Dispatch<React.SetStateAction<string>>) => boolean,
 }
 
-const AnimatedText = Animated.createAnimatedComponent(Text);
-const AnimatedView = Animated.createAnimatedComponent(Text);
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
 
     const [currentInput, setCurrentInput] = useState<string>("");
@@ -72,7 +70,7 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
         const animateColor = interpolateColor(
             movePlaceholder.value,
             [0, 1],
-            ["#1E1E20", "#60626D"]
+            [colors.textMain, colors.textSecond]
         )
         const animateSize = interpolate(
             movePlaceholder.value,
@@ -84,12 +82,18 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
             [0, 1],
             [20, 16]
         )
+        const animateLetterSpacing = interpolate(
+            movePlaceholder.value,
+            [0, 1],
+            [-0.24, 0]
+        )
 
         return {
             top: animatedTop,
             color: animateColor,
             fontSize: animateSize,
             lineHeight: animateLineHeight,
+            letterSpacing: animateLetterSpacing,
         };
     });
 
@@ -97,7 +101,7 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
         const animatedColor = interpolateColor(
             activeInput.value,
             [0, 1],
-            ["#FFFFFF", isCorrect ? "#413DFF" : "#FF450B"]
+            ["white", isCorrect ? colors.success : colors.error]
         );
 
         return {
@@ -160,10 +164,14 @@ const styles= StyleSheet.create({
         paddingLeft: 16,
         width: width - 16 * 2,
         height: 56,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: 'white',
         borderRadius: 12,
         paddingTop: 14,
         borderWidth: 1,
+        fontSize: 15,
+        lineHeight: 20,
+        fontFamily: 'Raleway-Medium',
+        color: colors.textMain,
     },
     name: {
         position: 'absolute',
@@ -171,16 +179,17 @@ const styles= StyleSheet.create({
         left: 16,
         lineHeight: 20,
         fontSize: 15,
+        fontFamily: 'Raleway-Medium',
     },
     containerText: {
         paddingLeft: 16,
-
     },
     textWarning: {
         letterSpacing: -0.08,
-        color: "#FF450B",
+        color: colors.error,
         lineHeight: 18,
         fontSize: 13,
+        fontFamily: 'Raleway-Regular',
     }
 });
 

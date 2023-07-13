@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {Dimensions, StyleSheet, View, Text, Pressable} from "react-native";
 import CheckSVG from "../assets/svg/Check";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -28,9 +29,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ text, onChange }) => {
                         <CheckSVG/>
                     </View>
                     :
-                    <View style={styles.unpressed}>
-
-                    </View>
+                    <View style={styles.unpressed}/>
                 }
             </Pressable>
             <Text style={styles.text}>{text}</Text>
@@ -45,6 +44,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingRight: 8,
     },
     pressable: {
         width: 40,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         height: 24,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#413DFF',
+        backgroundColor: colors.success,
         borderRadius: 8,
     },
     unpressed: {
@@ -66,10 +66,13 @@ const styles = StyleSheet.create({
         height: 24,
         borderRadius: 8,
         borderWidth: 1,
-        borderColor: '#60626D',
+        borderColor: colors.textSecond,
     },
     text: {
-
+        fontSize: 13,
+        fontFamily: 'Raleway-Regular',
+        letterSpacing: -0.08,
+        color: colors.textSecond
     }
 });
 

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import {Dimensions, StyleSheet, View, Text, Pressable, TouchableOpacity} from "react-native";
+import React from 'react';
+import {Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import BackSVG from "../assets/svg/Back";
-import {NavigationProp} from "@react-navigation/native";
 
 const { height, width } = Dimensions.get('window');
 

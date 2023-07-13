@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from "../components/Header";
 import CustomButton from "../components/CustomButton";
 import BackgroundComponent from "../components/BackgroundComponent";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -21,31 +22,31 @@ export default function ResultScreen({navigation}) {
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
             <BackgroundComponent>
-            <View style={styles.container}>
-                <Header
-                    active={true}
-                    onPress={onPressHeader}
-                />
-                <View style={styles.content}>
-                    <LottieView
-                        autoPlay
-                        loop={true}
-                        style={styles.lottie}
-                        source={require('../assets/lottie/successfully-done.json')}
+                <View style={styles.container}>
+                    <Header
+                        active={true}
+                        onPress={onPressHeader}
                     />
-                    <View style={styles.textContainer}>
-                        <Text style={styles.textBold}>
-                            {"Готово!"}
-                        </Text>
-                        <Text style={styles.textUsual}>
-                            {"Заявка отправлена. Мы с вами свяжемся в ближайший час."}
-                        </Text>
+                    <View style={styles.content}>
+                        <LottieView
+                            autoPlay
+                            loop={true}
+                            style={styles.lottie}
+                            source={require('../assets/lottie/successfully-done.json')}
+                        />
+                        <View style={styles.textContainer}>
+                            <Text style={styles.textBold}>
+                                {"Готово!"}
+                            </Text>
+                            <Text style={styles.textUsual}>
+                                {"Заявка отправлена. Мы с вами свяжемся в ближайший час."}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <CustomButton name={"Ок"} onPress={onPress}/>
                     </View>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <CustomButton name={"Ок"} onPress={onPress}/>
-                </View>
-            </View>
             </BackgroundComponent>
         </SafeAreaView>
     )
@@ -80,15 +81,17 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "500",
         fontSize: 24,
-        color: "#1E1E20",
+        color: colors.textMain,
         lineHeight: 34,
+        fontFamily: "Raleway-SemiBold"
     },
     textUsual: {
         textAlign: "center",
         fontSize: 15,
         fontWeight: "300",
-        color: "#60626D",
+        color: colors.textSecond,
         lineHeight: 22,
+        fontFamily: "Raleway-Regular"
     },
     buttonContainer: {
         marginBottom: 42,

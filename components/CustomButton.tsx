@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import {Button, Dimensions, Pressable, StyleSheet, View, Text, TouchableOpacity, TextInput} from "react-native";
-import Animated, {
-    interpolate,
+import {Dimensions, StyleSheet, View, Text} from "react-native";
+import {
     interpolateColor,
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withTiming
 } from "react-native-reanimated";
+import {AnimatedTouchableOpacity} from "./AnimatedComponents";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 
@@ -17,7 +17,6 @@ interface ButtonProps {
     onPress: () => void,
 }
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 const CustomButton: React.FC<ButtonProps> = ({ name, active=true, onPress }) => {
 
     const activeButton = useSharedValue(0);
@@ -30,7 +29,7 @@ const CustomButton: React.FC<ButtonProps> = ({ name, active=true, onPress }) => 
         const colorAnimated = interpolateColor(
             activeButton.value,
             [0, 1],
-            ["#A09EFF", "#413DFF"]
+            [colors.inactive, colors.success]
         )
 
         return {
@@ -62,11 +61,12 @@ const styles = StyleSheet.create({
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#413DFF',
         borderRadius: 12,
         tintColor: 'green',
     },
     text: {
+        fontSize: 15,
+        fontFamily: 'Raleway-Medium',
         color: '#FCFCFC',
     }
 });

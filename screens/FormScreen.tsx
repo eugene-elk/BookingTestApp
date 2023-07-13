@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {Button, Dimensions, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import React, { useState } from 'react';
+import {Dimensions, ScrollView, StyleSheet, Text, View} from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomCheckbox from "../components/CustomCheckbox";
 import Header from "../components/Header";
@@ -7,8 +7,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Input from "../components/Input";
 import InputPhone from "../components/InputPhone";
 import {useDeepEffect} from "../hooks/useDeepEffect";
-import CodeInput from "../components/CodeInput";
 import BackgroundComponent from "../components/BackgroundComponent";
+import colors from '../assets/colors/colors';
 
 const { height, width } = Dimensions.get('window');
 export default function FormScreen({navigation}) {
@@ -117,56 +117,56 @@ export default function FormScreen({navigation}) {
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
             <BackgroundComponent>
                 <View style={[styles.container]}>
-                <ScrollView
-                    scrollEnabled={true}
-                    contentContainerStyle={styles.contentContainer}
-                >
-                    <Header
-                        active={false}
-                    />
-                    <View style={styles.textContainer}>
-                        <Text style={styles.textBold}>
-                            {"Забронировать слот"}
-                        </Text>
-                        <Text style={styles.textUsual}>
-                            {"Оставьте контактные данные, и мы с вами свяжемся в ближайший час."}
-                        </Text>
+                    <ScrollView
+                        scrollEnabled={true}
+                        contentContainerStyle={styles.contentContainer}
+                    >
+                        <Header
+                            active={false}
+                        />
+                        <View style={styles.textContainer}>
+                            <Text style={styles.textBold}>
+                                {"Забронировать слот"}
+                            </Text>
+                            <Text style={styles.textUsual}>
+                                {"Оставьте контактные данные, и мы с вами свяжемся в ближайший час."}
+                            </Text>
+                        </View>
+                        <View style={styles.inputsContainer}>
+                            <View style={styles.inputWrapper}>
+                                <Input
+                                    name={"Имя"}
+                                    warningMessage={"Введите корректное имя"}
+                                    checkCorrect={checkCorrectName}
+                                />
+                            </View>
+                            <View style={styles.inputWrapper}>
+                                <Input
+                                    name={"E-mail"}
+                                    warningMessage={"Введите корректный e-mail"}
+                                    checkCorrect={checkCorrectEmail}
+                                />
+                            </View>
+                            <View style={styles.inputWrapper}>
+                                <InputPhone
+                                    warningMessage={"Введите корректный номер телефона"}
+                                    checkCorrect={checkCorrectPhone}
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <View style={styles.containerBottom}>
+                        <CustomButton
+                            name={"Отправить"}
+                            onPress={buttonPressed}
+                            active={buttonActive}
+                        />
+                        <CustomCheckbox
+                            text={"Я даю согласие на обработку своих данных."}
+                            onChange={checkboxPressed}
+                        />
                     </View>
-                    <View style={styles.inputsContainer}>
-                        <View style={styles.inputWrapper}>
-                            <Input
-                                name={"Имя"}
-                                warningMessage={"Введите корректное имя"}
-                                checkCorrect={checkCorrectName}
-                            />
-                        </View>
-                        <View style={styles.inputWrapper}>
-                            <Input
-                                name={"E-mail"}
-                                warningMessage={"Введите корректный e-mail"}
-                                checkCorrect={checkCorrectEmail}
-                            />
-                        </View>
-                        <View style={styles.inputWrapper}>
-                            <InputPhone
-                                warningMessage={"Введите корректный номер телефона"}
-                                checkCorrect={checkCorrectPhone}
-                            />
-                        </View>
-                    </View>
-                </ScrollView>
-                <View style={styles.containerBottom}>
-                    <CustomButton
-                        name={"Отправить"}
-                        onPress={buttonPressed}
-                        active={buttonActive}
-                    />
-                    <CustomCheckbox
-                        text={"Я даю согласие на обработку своих данных."}
-                        onChange={checkboxPressed}
-                    />
                 </View>
-            </View>
             </BackgroundComponent>
         </SafeAreaView>
     )
@@ -199,17 +199,17 @@ const styles = StyleSheet.create({
     },
     textBold: {
         textAlign: "center",
-        fontWeight: "500",
+        fontFamily: 'Raleway-SemiBold',
         fontSize: 24,
-        color: "#1E1E20",
+        color: colors.textMain,
         lineHeight: 34,
         marginBottom: 8,
     },
     textUsual: {
         textAlign: "center",
         fontSize: 15,
-        fontWeight: "300",
-        color: "#60626D",
+        fontFamily: 'Raleway-Regular',
+        color: colors.textSecond,
         lineHeight: 22,
     },
     containerBottom: {
@@ -218,5 +218,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 8,
+        marginBottom: 10,
     }
 });
