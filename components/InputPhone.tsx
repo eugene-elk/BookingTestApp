@@ -42,26 +42,20 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         console.log("Focused:", focused);
         console.log("optionsOpen:",optionsOpen);
         console.log("currentInput:", currentInput);
-        if (focused || optionsOpen || currentInput !== "") {
+        if (focused || optionsOpen || currentInput !== "")
             activeInput.value = withTiming(1, { duration: 100 });
-        }
-        else {
+        else
             activeInput.value = withTiming(0, { duration: 100 });
-        }
 
-        if (focused) {
+        if (focused)
             border.value = withTiming(1, { duration: 100 });
-        }
-        else {
+        else
             border.value = withTiming(0, { duration: 100 });
-        }
 
-        if ((currentInput === "") && (focused)) {
+        if ((currentInput === "") && (focused))
             warningAnimated.value = withTiming(0, { duration: 100 });
-        }
-        else {
+        else
             warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
-        }
     }, [focused, isCorrect]);
 
     const onChangeText = (input: string) => {

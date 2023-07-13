@@ -30,26 +30,20 @@ const Input: React.FC<InputProps> = ({name, warningMessage, checkCorrect }) => {
     const warningAnimated = useSharedValue(1);
 
     useEffect(()=> {
-        if ((currentInput === "") && (!focused)) {
+        if ((currentInput === "") && (!focused))
             movePlaceholder.value = withTiming(0, { duration: 100 });
-        }
-        else {
+        else
             movePlaceholder.value = withTiming(1, { duration: 100 });
-        }
 
-        if ((currentInput === "") && (focused)) {
+        if ((currentInput === "") && (focused))
             warningAnimated.value = withTiming(0, { duration: 100 });
-        }
-        else {
+        else
             warningAnimated.value = withTiming(Number(isCorrect), { duration: 100 });
-        }
 
-        if ((currentInput !== "") && (!isCorrect)) {
+        if ((currentInput !== "") && (!isCorrect))
             activeInput.value = withTiming(1, { duration: 100 });
-        }
-        else {
+        else
             activeInput.value = withTiming(Number(focused), { duration: 100 });
-        }
     },[focused, currentInput, isCorrect]);
 
     const onChangeText = (input: string) => {
