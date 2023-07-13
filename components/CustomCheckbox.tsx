@@ -39,7 +39,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ text, onChange }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: width - 16 * 2,
+        width: Math.min(width, height) - 16 * 2,
         height: 40,
         flexDirection: 'row',
         justifyContent: 'center',

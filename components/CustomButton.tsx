@@ -51,13 +51,13 @@ const CustomButton: React.FC<ButtonProps> = ({ name, active=true, onPress }) => 
 
 const styles = StyleSheet.create({
     container: {
-        width: width,
+        width: Math.min(width, height),
         height: 56,
         justifyContent: 'center',
         alignItems: 'center'
     },
     button: {
-        width: width - 16 * 2,
+        width: Math.min(width, height) - 16 * 2,
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',

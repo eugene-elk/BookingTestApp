@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({active = false, onPress = () => null}) =
 
 const styles = StyleSheet.create({
     container: {
-        width: width,
+        width: Math.min(width, height),
         height: 56,
         justifyContent: "center",
         alignItems: "flex-start",

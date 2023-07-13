@@ -162,7 +162,7 @@ const styles= StyleSheet.create({
     },
     textInput: {
         paddingLeft: 16,
-        width: width - 16 * 2,
+        width: Math.min(width, height) - 16 * 2,
         height: 56,
         backgroundColor: 'white',
         borderRadius: 12,

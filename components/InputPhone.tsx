@@ -21,8 +21,6 @@ interface InputPhoneProps {
 const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage }) => {
 
     const mask = "(***) - *** - ** - **"
-    const minWidth = width - (16 * 2) - 64 - 4;
-    const maxWidth = width - (16 * 2);
 
     const [currentInput, setCurrentInput] = useState<string>("");
     const [currentMaskedInput, setCurrentMaskedInput] = useState<string>("");
@@ -68,7 +66,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         const widthAnimated = interpolate(
             activeInput.value,
             [0, 1],
-            [maxWidth, minWidth]
+            [Math.min(width, height) - (16 * 2), Math.min(width, height) - (16 * 2) - 64 - 4]
         )
         const borderRadiusLeftAnimated = interpolate(
             activeInput.value,

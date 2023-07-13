@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Dimensions, ScrollView, StyleSheet, Text, View} from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomCheckbox from "../components/CustomCheckbox";
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         marginTop: 8,
-        width: width - 24 * 2,
+        width: Math.min(width, height) - 24 * 2,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         lineHeight: 22,
     },
     containerBottom: {
-        width: width,
+        width: Math.min(width, height),
         height: 120,
         justifyContent: 'space-between',
         alignItems: 'center',

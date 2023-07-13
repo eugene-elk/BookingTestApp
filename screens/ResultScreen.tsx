@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     textContainer: {
         marginTop: -(76 - 32),
         height: 76,
-        width: width - 24 * 2,
+        width: Math.min(width, height) - 24 * 2,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
         fontFamily: "Raleway-Regular"
     },
     buttonContainer: {
-        marginBottom: 42,
+        marginBottom: 32,
     }
 });
