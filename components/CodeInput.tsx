@@ -24,7 +24,7 @@ const CodeInput: React.FC = () => {
                 data={countries}
                 defaultValue={'+7'}
                 onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
+                    //console.log(selectedItem, index);
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
                     return selectedItem;

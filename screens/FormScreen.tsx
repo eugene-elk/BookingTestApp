@@ -23,12 +23,10 @@ export default function FormScreen({navigation}) {
     });
 
     useDeepEffect(() => {
-        console.log(ready);
         let result: boolean = true;
         for (let key in ready) {
             result = result && ready[key];
         }
-        console.log(result);
         setButtonActive(result);
     }, [ready])
 

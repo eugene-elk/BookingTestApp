@@ -30,6 +30,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
 
     const [focused, setFocused] = useState<boolean>(false);
     const activeInput = useSharedValue(0);
+    const border = useSharedValue(0);
 
     const [isCorrect, setIsCorrect] = useState<boolean>(true);
     const warningAnimated = useSharedValue(1);
@@ -38,11 +39,21 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
     const [firstRender, setFirstRender] = useState<boolean>(true);
 
     useEffect(() => {
+        console.log("Focused:", focused);
+        console.log("optionsOpen:",optionsOpen);
+        console.log("currentInput:", currentInput);
         if (focused || optionsOpen || currentInput !== "") {
             activeInput.value = withTiming(1, { duration: 100 });
         }
         else {
             activeInput.value = withTiming(0, { duration: 100 });
+        }
+
+        if (focused) {
+            border.value = withTiming(1, { duration: 100 });
+        }
+        else {
+            border.value = withTiming(0, { duration: 100 });
         }
 
         if ((currentInput === "") && (focused)) {
@@ -73,8 +84,8 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
             [0, 1],
             [12, 0]
         )
-        const animatedColor = interpolateColor(
-            activeInput.value,
+        const animatedBorderColor = interpolateColor(
+            border.value,
             [0, 1],
             ['white', isCorrect ? colors.success : colors.error]
         );
@@ -84,7 +95,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
             width: widthAnimated,
             borderTopLeftRadius: borderRadiusLeftAnimated,
             borderBottomLeftRadius: borderRadiusLeftAnimated,
-            borderColor: animatedColor,
+            borderColor: animatedBorderColor,
         }
     })
 
@@ -148,7 +159,6 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
                 style={styles.hiddenText}
                 onLayout={(event) => {
                     const { width } = event.nativeEvent.layout;
-                    console.log(width);
                     setInputPxLen(width);
                     setMaskEnd(mask.slice(currentMaskedInput.length));
                 }}

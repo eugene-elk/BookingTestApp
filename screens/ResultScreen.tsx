@@ -12,7 +12,7 @@ const { height, width } = Dimensions.get('window');
 export default function ResultScreen({navigation}) {
 
     const onPress = () => {
-        console.log("onPress");
+        //console.log("onPress");
     }
 
     const onPressHeader = () => {
