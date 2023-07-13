@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Dimensions, StyleSheet, TextInput, View, Text} from "react-native";
 import Animated, {
   interpolate,
@@ -9,6 +9,7 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 import CodeInput from "./CodeInput";
+import {AnimatedMaskedTextInput, AnimatedText, AnimatedView} from "./AnimatedComponents";
 
 const { height, width } = Dimensions.get('window');
 
@@ -17,23 +18,28 @@ interface InputPhoneProps {
     checkCorrect: (input: string, setState: React.Dispatch<React.SetStateAction<string>>) => boolean,
 }
 
-const AnimatedText = Animated.createAnimatedComponent(Text);
-const AnimatedView = Animated.createAnimatedComponent(Text);
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage }) => {
 
-    const [currentInput, setCurrentInput] = useState<string>("")
+    const mask = "(***) - *** - ** - **"
+    const minWidth = width - (16 * 2) - 64 - 4;
+    const maxWidth = width - (16 * 2);
+
+    const [currentInput, setCurrentInput] = useState<string>("");
+    const [currentMaskedInput, setCurrentMaskedInput] = useState<string>("");
+
+    const [inputPxLen, setInputPxLen] = useState<number>(0);
+    const [maskEnd, setMaskEnd] = useState<string>(mask);
+
     const [focused, setFocused] = useState<boolean>(false);
     const activeInput = useSharedValue(0);
 
     const [isCorrect, setIsCorrect] = useState<boolean>(true);
     const warningAnimated = useSharedValue(1);
-
     const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-        console.log("isCorrect:", isCorrect);
+    const [firstRender, setFirstRender] = useState<boolean>(true);
 
+    useEffect(() => {
         if (focused || optionsOpen || currentInput !== "") {
             activeInput.value = withTiming(1, { duration: 100 });
         }
@@ -62,7 +68,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
         const widthAnimated = interpolate(
             activeInput.value,
             [0, 1],
-            [width - (16 * 2), width - (16 * 2) - 64 - 4]
+            [maxWidth, minWidth]
         )
         const borderRadiusLeftAnimated = interpolate(
             activeInput.value,
@@ -140,19 +146,39 @@ const InputPhone: React.FC<InputPhoneProps> = ({ checkCorrect, warningMessage })
 
     return (
         <View>
+            <Text
+                style={styles.hiddenText}
+                onLayout={(event) => {
+                    const { width } = event.nativeEvent.layout;
+                    console.log(width);
+                    setInputPxLen(width);
+                    setMaskEnd(mask.slice(currentMaskedInput.length));
+                }}
+            >
+                {currentMaskedInput}
+            </Text>
             <View style={styles.container}>
                 <AnimatedView style={[styles.codeInputContainer, animatedCodeContainer]}>
                     <CodeInput />
                 </AnimatedView>
-                <AnimatedTextInput
-                    onChangeText={onChangeText}
-                    value={currentInput}
-                    style={[styles.textInput, animatedTextInput]}
+                <AnimatedMaskedTextInput
+                    mask="(999) - 999 - 99 - 99 - 99 - 9"
+                    onChangeText={(text, rawText) => {
+                        if (firstRender) setFirstRender(false);
+                        else {
+                            onChangeText(rawText);
+                            setCurrentMaskedInput(text);
+                        }
+                    }}
+                    disableFullscreenUI={true}
                     onFocus={onFocus}
                     onBlur={() => setFocused(false)}
-                    disableFullscreenUI={true}
+                    style={[styles.textInput, animatedTextInput]}
                     keyboardType={"phone-pad"}
                 />
+                <Text style={[styles.placeholderEnd, {left: inputPxLen + 64 + 4 + 16}]}>
+                    {focused ? maskEnd : ""}
+                </Text>
                 <AnimatedText style={[styles.name, animatedPlaceholder]}>
                     {"Номер телефона"}
                 </AnimatedText>
@@ -171,6 +197,11 @@ const styles = StyleSheet.create({
         height: 56,
         flexDirection: 'row',
     },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+    },
     codeInputContainer: {
         flex: 1,
         borderTopLeftRadius: 12,
@@ -183,6 +214,15 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 12,
         paddingLeft: 16,
         borderWidth: 1,
+        fontSize: 15,
+        lineHeight: 20
+    },
+    placeholderEnd: {
+        fontSize: 15,
+        lineHeight: 20,
+        color: 'grey',
+        position: 'absolute',
+        top: 16,
     },
     name: {
         position: 'absolute',
@@ -199,6 +239,13 @@ const styles = StyleSheet.create({
         color: "#FF450B",
         lineHeight: 18,
         fontSize: 13,
+    },
+    hiddenText: {
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        color: 'transparent',
+        fontSize: 15,
     }
 })
 

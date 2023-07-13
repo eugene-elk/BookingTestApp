@@ -4,6 +4,7 @@ import LottieView from 'lottie-react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from "../components/Header";
 import CustomButton from "../components/CustomButton";
+import BackgroundComponent from "../components/BackgroundComponent";
 
 const { height, width } = Dimensions.get('window');
 
@@ -19,6 +20,7 @@ export default function ResultScreen({navigation}) {
 
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <BackgroundComponent>
             <View style={styles.container}>
                 <Header
                     active={true}
@@ -44,21 +46,23 @@ export default function ResultScreen({navigation}) {
                     <CustomButton name={"Ок"} onPress={onPress}/>
                 </View>
             </View>
+            </BackgroundComponent>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: width,
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
         flex: 1,
+        backgroundColor: 'transparent'
     },
     content: {
         height: 240 + 32,
         alignItems: "center",
+        backgroundColor: 'transparent'
     },
     lottie: {
         width: 240,

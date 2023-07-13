@@ -8,6 +8,7 @@ import Input from "../components/Input";
 import InputPhone from "../components/InputPhone";
 import {useDeepEffect} from "../hooks/useDeepEffect";
 import CodeInput from "../components/CodeInput";
+import BackgroundComponent from "../components/BackgroundComponent";
 
 const { height, width } = Dimensions.get('window');
 export default function FormScreen({navigation}) {
@@ -42,8 +43,9 @@ export default function FormScreen({navigation}) {
         }
 
         const regexFull = /^[\u0400-\u04FF]([\u0400-\u04FF ]*[\u0400-\u04FF])?$/;
+        const regexLength = /^.{3,10}$/;
         const regexSymbols = /^[\u0400-\u04FF ]*$/i;
-        const testRegexFull = regexFull.test(input);
+        const testRegexFull = regexFull.test(input) && regexLength.test(input);
         const testRegexSymbols = regexSymbols.test(input);
 
         if (testRegexSymbols) {
@@ -105,7 +107,6 @@ export default function FormScreen({navigation}) {
     }
 
     const checkboxPressed = (value: boolean) => {
-        console.log("checkbox pressed");
         setReady({
             ...ready,
             checkbox: value,
@@ -114,7 +115,8 @@ export default function FormScreen({navigation}) {
 
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
-            <View style={styles.container}>
+            <BackgroundComponent>
+                <View style={[styles.container]}>
                 <ScrollView
                     scrollEnabled={true}
                     contentContainerStyle={styles.contentContainer}
@@ -165,6 +167,7 @@ export default function FormScreen({navigation}) {
                     />
                 </View>
             </View>
+            </BackgroundComponent>
         </SafeAreaView>
     )
 }
@@ -174,10 +177,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: 'transparent'
     },
     contentContainer: {
         flexDirection: 'column',
         alignItems: 'center',
+        backgroundColor: 'transparent'
     },
     textContainer: {
         marginTop: 8,

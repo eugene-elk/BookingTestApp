@@ -1,20 +1,6 @@
 import React, { useEffect } from 'react';
-import {Button, Dimensions, Pressable, StyleSheet, View, Text, TouchableOpacity, TextInput} from "react-native";
-import Animated, {
-    interpolate,
-    interpolateColor,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming
-} from "react-native-reanimated";
+import {StyleSheet, View} from "react-native";
 import SelectDropdown from 'react-native-select-dropdown';
-
-const { height, width } = Dimensions.get('window');
-
-interface CodeInputProps {
-
-}
 
 const CodeInput: React.FC = () => {
 
